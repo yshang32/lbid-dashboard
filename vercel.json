@@ -1,6 +1,11 @@
 {
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/notion?path=:path*" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "api/notion.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/notion.js?path=$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
