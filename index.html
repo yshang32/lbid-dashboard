@@ -49,7 +49,7 @@ tailwind.config = {
   <aside class="w-56 bg-white border-r border-slate-100 flex flex-col flex-shrink-0">
     <div class="p-4 border-b border-slate-100">
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center text-lg">🚢</div>
+        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center text-lg">ð¢</div>
         <div>
           <div class="text-sm font-semibold text-navy">LBID</div>
           <div class="text-xs text-slate-400">Team workspace</div>
@@ -74,12 +74,12 @@ tailwind.config = {
       <button onclick="nav('tasks')" id="nav-tasks" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         Tasks
-        <span id="sb-p0" class="ml-auto text-xs font-semibold bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full">—</span>
+        <span id="sb-p0" class="ml-auto text-xs font-semibold bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full">â</span>
       </button>
       <button onclick="nav('ccmf')" id="nav-ccmf" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         CCMF
-        <span class="ml-auto text-xs font-semibold bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full" id="sb-ccmf-days">—d</span>
+        <span class="ml-auto text-xs font-semibold bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full" id="sb-ccmf-days">âd</span>
       </button>
       <button onclick="nav('meetings')" id="nav-meetings" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -88,6 +88,10 @@ tailwind.config = {
       <button onclick="nav('feed')" id="nav-feed" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
         Feed
+      </button>
+      <button onclick="nav('docs')" id="nav-docs" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Docs
       </button>
 
       <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-2 mt-2">Links</div>
@@ -138,38 +142,38 @@ tailwind.config = {
           <!-- CCMF Banner -->
           <div class="bg-navy rounded-2xl p-5 flex items-center gap-6">
             <div class="text-center flex-shrink-0">
-              <div class="text-5xl font-bold text-gold" id="ov-days">—</div>
+              <div class="text-5xl font-bold text-gold" id="ov-days">â</div>
               <div class="text-xs text-slate-400 mt-1">days left</div>
             </div>
             <div class="flex-1">
-              <div class="text-sm font-semibold text-white">CCMF 申請倒計時</div>
-              <div class="text-xs text-slate-400 mt-1">Cyberport Creative Micro Fund · 截止 2026-08-01</div>
+              <div class="text-sm font-semibold text-white">CCMF ç³è«åè¨æ</div>
+              <div class="text-xs text-slate-400 mt-1">Cyberport Creative Micro Fund Â· æªæ­¢ 2026-08-01</div>
               <div class="mt-3 h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <div class="h-full bg-gold rounded-full transition-all duration-700" id="ov-bar" style="width:0%"></div>
               </div>
-              <a href="#" onclick="nav('ccmf')" class="inline-block mt-2 text-xs text-gold hover:underline">查看 CCMF 專頁 →</a>
+              <a href="#" onclick="nav('ccmf')" class="inline-block mt-2 text-xs text-gold hover:underline">æ¥ç CCMF å°é  â</a>
             </div>
           </div>
           <!-- Metrics -->
           <div class="grid grid-cols-4 gap-3">
             <div class="bg-white rounded-xl p-4 border border-slate-100">
               <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total tasks</div>
-              <div class="text-3xl font-semibold text-navy mt-1" id="m-total">—</div>
+              <div class="text-3xl font-semibold text-navy mt-1" id="m-total">â</div>
               <div class="text-xs text-slate-400 mt-1">P0 to P3</div>
             </div>
             <div class="bg-white rounded-xl p-4 border border-slate-100">
               <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">P0 critical</div>
-              <div class="text-3xl font-semibold text-red-600 mt-1" id="m-p0">—</div>
+              <div class="text-3xl font-semibold text-red-600 mt-1" id="m-p0">â</div>
               <div class="text-xs text-slate-400 mt-1">need attention</div>
             </div>
             <div class="bg-white rounded-xl p-4 border border-slate-100">
               <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">In progress</div>
-              <div class="text-3xl font-semibold text-blue-600 mt-1" id="m-wip">—</div>
+              <div class="text-3xl font-semibold text-blue-600 mt-1" id="m-wip">â</div>
               <div class="text-xs text-slate-400 mt-1">active tasks</div>
             </div>
             <div class="bg-white rounded-xl p-4 border border-slate-100">
               <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Completed</div>
-              <div class="text-3xl font-semibold text-green-600 mt-1" id="m-done">—</div>
+              <div class="text-3xl font-semibold text-green-600 mt-1" id="m-done">â</div>
               <div class="text-xs text-slate-400 mt-1">tasks done</div>
             </div>
           </div>
@@ -181,8 +185,8 @@ tailwind.config = {
           <!-- P0 List -->
           <div>
             <div class="flex items-center justify-between mb-3">
-              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">P0 — this week</div>
-              <button onclick="nav('tasks')" class="text-xs text-blue-600 hover:underline">See all →</button>
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">P0 â this week</div>
+              <button onclick="nav('tasks')" class="text-xs text-blue-600 hover:underline">See all â</button>
             </div>
             <div class="space-y-2" id="ov-p0-list"></div>
           </div>
@@ -234,9 +238,9 @@ tailwind.config = {
           <button onclick="filterTasks('P1',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">P1</button>
           <button onclick="filterTasks('P2',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">P2</button>
           <button onclick="filterTasks('P3',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">P3</button>
-          <button onclick="filterTasks('進行中',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">進行中</button>
-          <button onclick="filterTasks('未開始',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">未開始</button>
-          <button onclick="filterTasks('完成',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">完成</button>
+          <button onclick="filterTasks('é²è¡ä¸­',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">é²è¡ä¸­</button>
+          <button onclick="filterTasks('æªéå§',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">æªéå§</button>
+          <button onclick="filterTasks('å®æ',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">å®æ</button>
         </div>
         <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
           <div id="tasks-list" class="divide-y divide-slate-50"></div>
@@ -248,7 +252,7 @@ tailwind.config = {
         <div class="bg-navy rounded-2xl p-6">
           <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Cyberport Creative Micro Fund</div>
           <div class="flex items-end gap-4">
-            <div><div class="text-6xl font-bold text-gold" id="ccmf-days2">—</div><div class="text-sm text-slate-400 mt-1">days remaining</div></div>
+            <div><div class="text-6xl font-bold text-gold" id="ccmf-days2">â</div><div class="text-sm text-slate-400 mt-1">days remaining</div></div>
             <div class="flex-1 pb-1">
               <div class="flex justify-between text-xs text-slate-400 mb-2"><span>Progress</span><span id="ccmf-pct2">0%</span></div>
               <div class="h-2 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-gold rounded-full transition-all" id="ccmf-bar2" style="width:0%"></div></div>
@@ -258,31 +262,31 @@ tailwind.config = {
         </div>
         <div class="grid grid-cols-3 gap-3">
           <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
-            <div class="text-2xl font-semibold text-navy" id="ccmf-biz">—</div>
-            <div class="text-xs text-slate-400 mt-1">商業任務</div>
+            <div class="text-2xl font-semibold text-navy" id="ccmf-biz">â</div>
+            <div class="text-xs text-slate-400 mt-1">åæ¥­ä»»å</div>
           </div>
           <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
-            <div class="text-2xl font-semibold text-amber-600" id="ccmf-wip">—</div>
-            <div class="text-xs text-slate-400 mt-1">進行中</div>
+            <div class="text-2xl font-semibold text-amber-600" id="ccmf-wip">â</div>
+            <div class="text-xs text-slate-400 mt-1">é²è¡ä¸­</div>
           </div>
           <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
-            <div class="text-2xl font-semibold text-green-600" id="ccmf-done">—</div>
-            <div class="text-xs text-slate-400 mt-1">已完成</div>
+            <div class="text-2xl font-semibold text-green-600" id="ccmf-done">â</div>
+            <div class="text-xs text-slate-400 mt-1">å·²å®æ</div>
           </div>
         </div>
         <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-          <div class="p-4 border-b border-slate-100 text-sm font-semibold text-navy">CCMF 相關任務</div>
+          <div class="p-4 border-b border-slate-100 text-sm font-semibold text-navy">CCMF ç¸éä»»å</div>
           <div id="ccmf-tasks" class="divide-y divide-slate-50"></div>
         </div>
         <div class="bg-amber-50 border border-amber-100 rounded-xl p-4">
-          <div class="text-sm font-semibold text-amber-800 mb-2">申請 Checklist</div>
+          <div class="text-sm font-semibold text-amber-800 mb-2">ç³è« Checklist</div>
           <div class="space-y-2 text-sm text-amber-700">
-            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 產品 Demo 影片</label>
-            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 商業計劃書</label>
-            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 技術架構文件</label>
-            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 團隊背景資料</label>
-            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 財務預算</label>
-            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 市場分析</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> ç¢å Demo å½±ç</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> åæ¥­è¨åæ¸</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> æè¡æ¶æ§æä»¶</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> åéèæ¯è³æ</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> è²¡åé ç®</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> å¸å ´åæ</label>
           </div>
         </div>
       </div>
@@ -291,34 +295,34 @@ tailwind.config = {
       <div id="pane-meetings" class="pane hidden fade-in">
         <div class="grid grid-cols-3 gap-3 mb-5">
           <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
-            <div class="text-2xl font-semibold text-navy">3–4×</div>
+            <div class="text-2xl font-semibold text-navy">3â4Ã</div>
             <div class="text-xs text-slate-400 mt-1">per week</div>
           </div>
           <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
-            <div class="text-2xl font-semibold text-navy">15–30m</div>
+            <div class="text-2xl font-semibold text-navy">15â30m</div>
             <div class="text-xs text-slate-400 mt-1">per session</div>
           </div>
           <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
-            <div class="text-2xl font-semibold text-navy" id="mtg-count">—</div>
+            <div class="text-2xl font-semibold text-navy" id="mtg-count">â</div>
             <div class="text-xs text-slate-400 mt-1">meetings logged</div>
           </div>
         </div>
         <!-- AI Summary Input -->
         <div class="bg-white rounded-2xl border border-slate-100 p-4 mb-5">
-          <div class="text-sm font-semibold text-navy mb-2">貼入會議記錄 → AI 整理摘要</div>
-          <textarea id="meeting-input" class="w-full text-sm border border-slate-200 rounded-xl p-3 h-28 resize-none focus:outline-none focus:border-navy/40 text-slate-700" placeholder="把 Craig Bot / Meetily 的會議轉錄文字貼在這裡..."></textarea>
+          <div class="text-sm font-semibold text-navy mb-2">è²¼å¥æè­°è¨é â AI æ´çæè¦</div>
+          <textarea id="meeting-input" class="w-full text-sm border border-slate-200 rounded-xl p-3 h-28 resize-none focus:outline-none focus:border-navy/40 text-slate-700" placeholder="æ Craig Bot / Meetily çæè­°è½éæå­è²¼å¨éè£¡..."></textarea>
           <div class="flex gap-2 mt-2">
             <button onclick="summarizeMeeting()" class="flex items-center gap-1.5 bg-navy text-white text-xs px-4 py-2 rounded-lg hover:bg-navy-2 transition-colors">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              AI 整理摘要
+              AI æ´çæè¦
             </button>
-            <button onclick="clearMeeting()" class="text-xs px-4 py-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">清除</button>
+            <button onclick="clearMeeting()" class="text-xs px-4 py-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">æ¸é¤</button>
           </div>
           <div id="ai-summary" class="hidden mt-3 bg-green-50 border border-green-100 rounded-xl p-4 text-sm text-slate-700 leading-relaxed"></div>
         </div>
         <div class="flex items-center justify-between mb-3">
           <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Meeting records</div>
-          <a href="https://app.notion.com/p/eb4c2a01c5a9482a956c71c64e1241fd" target="_blank" class="text-xs text-blue-600 hover:underline">Open in Notion →</a>
+          <a href="https://app.notion.com/p/eb4c2a01c5a9482a956c71c64e1241fd" target="_blank" class="text-xs text-blue-600 hover:underline">Open in Notion â</a>
         </div>
         <div class="space-y-3" id="meetings-list"></div>
       </div>
@@ -339,7 +343,43 @@ tailwind.config = {
               <button onclick="postFeed()" class="ml-auto bg-navy text-white text-xs px-4 py-1.5 rounded-lg hover:bg-navy-2 transition-colors">Post</button>
             </div>
           </div>
-          <div id="feed-list" class="space-y-3"></div>
+          <div id="feed-list" class="space
+
+      <!-- DOCS -->
+      <div id="pane-docs" class="pane hidden fade-in">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex gap-2 flex-wrap">
+            <button onclick="filterDocs('all',this)" class="doc-filter active-chip text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">All</button>
+            <button onclick="filterDocs('法律',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">法律</button>
+            <button onclick="filterDocs('財務',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">財務</button>
+            <button onclick="filterDocs('產品',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">產品</button>
+            <button onclick="filterDocs('行銷',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">行銷</button>
+            <button onclick="filterDocs('HR',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">HR</button>
+          </div>
+          <a id="docs-new-btn" href="https://www.notion.so/new" target="_blank"
+            class="flex items-center gap-1.5 bg-navy text-white text-xs px-3 py-1.5 rounded-lg hover:bg-navy-2 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Doc
+          </a>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-navy" id="docs-total">—</div>
+            <div class="text-xs text-slate-400 mt-1">total docs</div>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-navy" id="docs-recent">—</div>
+            <div class="text-xs text-slate-400 mt-1">updated this week</div>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-navy" id="docs-owners">—</div>
+            <div class="text-xs text-slate-400 mt-1">contributors</div>
+          </div>
+        </div>
+        <div id="docs-grid" class="grid grid-cols-1 gap-3">
+          <div class="text-center text-slate-400 text-sm py-8">Loading documents…</div>
+        </div>
+      </div>-y-3"></div>
         </div>
       </div>
 
@@ -364,11 +404,11 @@ let feedItems = JSON.parse(localStorage.getItem('lbid-feed') || '[]');
 let weekOffset = 0;
 
 const statusColors = {
-  '未開始': 'bg-slate-100 text-slate-600',
-  '進行中': 'bg-blue-100 text-blue-700',
-  '完成': 'bg-green-100 text-green-700',
-  '封鎖中': 'bg-red-100 text-red-700',
-  '待測試': 'bg-amber-100 text-amber-700',
+  'æªéå§': 'bg-slate-100 text-slate-600',
+  'é²è¡ä¸­': 'bg-blue-100 text-blue-700',
+  'å®æ': 'bg-green-100 text-green-700',
+  'å°éä¸­': 'bg-red-100 text-red-700',
+  'å¾æ¸¬è©¦': 'bg-amber-100 text-amber-700',
 };
 const priorityColors = {
   'P0': 'bg-red-100 text-red-700',
@@ -376,7 +416,7 @@ const priorityColors = {
   'P2': 'bg-yellow-100 text-yellow-700',
   'P3': 'bg-slate-100 text-slate-500',
 };
-const statusOptions = ['未開始', '進行中', '待測試', '完成', '封鎖中'];
+const statusOptions = ['æªéå§', 'é²è¡ä¸­', 'å¾æ¸¬è©¦', 'å®æ', 'å°éä¸­'];
 
 async function notionQuery(dbId, sorts) {
   const body = { page_size: 100 };
@@ -394,7 +434,7 @@ async function notionPatch(pageId, status) {
   const res = await fetch(`/api/notion?path=pages/${pageId}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'lbid-dashboard' },
-    body: JSON.stringify({ properties: { '狀態': { select: { name: status } } } }),
+    body: JSON.stringify({ properties: { 'çæ': { select: { name: status } } } }),
   });
   if (!res.ok) throw new Error(`Update failed: ${res.status}`);
   return res.json();
@@ -426,14 +466,14 @@ function taskRow(t, showStatusBtn = true) {
   ).join('');
   return `
     <div class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors" id="task-${t.id}">
-      ${pill(t.priority || '—', priorityColors[t.priority] || 'bg-slate-100 text-slate-500')}
+      ${pill(t.priority || 'â', priorityColors[t.priority] || 'bg-slate-100 text-slate-500')}
       <span class="flex-1 text-sm text-slate-700">${t.name}</span>
       <span class="text-xs text-slate-400 hidden sm:block">${t.category || ''}</span>
       ${showStatusBtn ? `
         <select onchange="updateStatus('${t.id}', this.value, this)" class="text-xs border border-slate-200 rounded-lg px-2 py-1 text-slate-600 focus:outline-none cursor-pointer hover:border-slate-300 bg-white">
           ${statusOpts}
         </select>
-      ` : pill(t.status || '—', statusColors[t.status] || 'bg-slate-100 text-slate-500')}
+      ` : pill(t.status || 'â', statusColors[t.status] || 'bg-slate-100 text-slate-500')}
       <span class="text-xs text-slate-400 w-12 text-right">${t.due ? fmtDate(t.due) : ''}</span>
     </div>
   `;
@@ -448,7 +488,7 @@ async function updateStatus(pageId, newStatus, selectEl) {
     showToast(`Updated to "${newStatus}"`);
     updateDashMetrics();
   } catch (e) {
-    showToast('Update failed — check Notion connection', true);
+    showToast('Update failed â check Notion connection', true);
   } finally {
     selectEl.disabled = false;
   }
@@ -464,8 +504,8 @@ function showToast(msg, isError = false) {
 function updateDashMetrics() {
   const total = allTasks.length;
   const p0 = allTasks.filter(t => t.priority === 'P0').length;
-  const wip = allTasks.filter(t => t.status === '進行中').length;
-  const done = allTasks.filter(t => t.status === '完成').length;
+  const wip = allTasks.filter(t => t.status === 'é²è¡ä¸­').length;
+  const done = allTasks.filter(t => t.status === 'å®æ').length;
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
   document.getElementById('m-total').textContent = total;
@@ -495,15 +535,15 @@ function updateDashMetrics() {
       ${pill(t.priority, priorityColors[t.priority] || '')}
       <span class="flex-1 text-sm text-slate-700">${t.name}</span>
       <span class="text-xs text-slate-400">${t.category || ''}</span>
-      ${pill(t.status || '—', statusColors[t.status] || 'bg-slate-100 text-slate-500')}
+      ${pill(t.status || 'â', statusColors[t.status] || 'bg-slate-100 text-slate-500')}
       <span class="text-xs text-slate-400">${t.due ? fmtDate(t.due) : ''}</span>
     </div>
   `).join('');
 
-  const bizTasks = allTasks.filter(t => t.category === '商業' || t.name.includes('CCMF'));
+  const bizTasks = allTasks.filter(t => t.category === 'åæ¥­' || t.name.includes('CCMF'));
   document.getElementById('ccmf-biz').textContent = bizTasks.length;
-  document.getElementById('ccmf-wip').textContent = bizTasks.filter(t => t.status === '進行中').length;
-  document.getElementById('ccmf-done').textContent = bizTasks.filter(t => t.status === '完成').length;
+  document.getElementById('ccmf-wip').textContent = bizTasks.filter(t => t.status === 'é²è¡ä¸­').length;
+  document.getElementById('ccmf-done').textContent = bizTasks.filter(t => t.status === 'å®æ').length;
   document.getElementById('ccmf-tasks').innerHTML = bizTasks.length
     ? bizTasks.map(t => taskRow(t)).join('')
     : '<div class="p-6 text-center text-sm text-slate-400">No CCMF tasks found</div>';
@@ -607,7 +647,7 @@ function renderSchedule() {
 
   const weekEnd = days[6];
   document.getElementById('week-label').textContent =
-    `${days[0].toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' })} – ${weekEnd.toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' })}`;
+    `${days[0].toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' })} â ${weekEnd.toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' })}`;
 
   const tasksByDay = {};
   allTasks.forEach(t => {
@@ -657,11 +697,11 @@ function renderMeetings() {
           <div class="text-sm font-medium text-slate-800">${m.title || 'Untitled'}</div>
           <div class="text-xs text-slate-400 whitespace-nowrap">${m.date ? new Date(m.date).toLocaleDateString('zh-HK', { year: 'numeric', month: 'short', day: 'numeric' }) : ''}</div>
         </div>
-        ${m.summary ? `<div class="text-xs text-slate-500 mt-2 leading-relaxed">${m.summary.slice(0, 200)}${m.summary.length > 200 ? '…' : ''}</div>` : ''}
+        ${m.summary ? `<div class="text-xs text-slate-500 mt-2 leading-relaxed">${m.summary.slice(0, 200)}${m.summary.length > 200 ? 'â¦' : ''}</div>` : ''}
         <div class="flex gap-1.5 mt-2 flex-wrap">
           ${m.type ? `<span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">${m.type}</span>` : ''}
           ${m.attendees.map(a => `<span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">${a}</span>`).join('')}
-          ${m.decisions ? '<span class="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">決議已記錄</span>' : ''}
+          ${m.decisions ? '<span class="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">æ±ºè­°å·²è¨é</span>' : ''}
         </div>
       </div>
     `).join('')
@@ -672,7 +712,7 @@ function summarizeMeeting() {
   const text = document.getElementById('meeting-input').value.trim();
   if (!text) return;
   const summaryEl = document.getElementById('ai-summary');
-  summaryEl.innerHTML = '<div class="flex items-center gap-2 text-slate-400"><div class="animate-spin w-4 h-4 border-2 border-slate-200 border-t-navy rounded-full"></div> 整理中...</div>';
+  summaryEl.innerHTML = '<div class="flex items-center gap-2 text-slate-400"><div class="animate-spin w-4 h-4 border-2 border-slate-200 border-t-navy rounded-full"></div> æ´çä¸­...</div>';
   summaryEl.classList.remove('hidden');
 
   setTimeout(() => {
@@ -680,12 +720,12 @@ function summarizeMeeting() {
     summaryEl.innerHTML = `
       <div class="text-xs font-semibold text-green-700 mb-2 flex items-center gap-1">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        AI 摘要已生成 — 請貼入 Notion 會議記錄
+        AI æè¦å·²çæ â è«è²¼å¥ Notion æè­°è¨é
       </div>
       <div class="space-y-2 text-sm">
-        <div><span class="font-medium text-slate-600">重點摘要：</span><span class="text-slate-600">${lines.slice(0, 2).join('。') || '—'}</span></div>
-        <div><span class="font-medium text-slate-600">字數：</span><span class="text-slate-600">${text.length} 字</span></div>
-        <div class="text-xs text-slate-400 mt-2">💡 完整 AI 摘要請貼入 Claude 對話：「整理以下會議記錄，格式：重點摘要、決定事項、Action Items」</div>
+        <div><span class="font-medium text-slate-600">éé»æè¦ï¼</span><span class="text-slate-600">${lines.slice(0, 2).join('ã') || 'â'}</span></div>
+        <div><span class="font-medium text-slate-600">å­æ¸ï¼</span><span class="text-slate-600">${text.length} å­</span></div>
+        <div class="text-xs text-slate-400 mt-2">ð¡ å®æ´ AI æè¦è«è²¼å¥ Claude å°è©±ï¼ãæ´çä»¥ä¸æè­°è¨éï¼æ ¼å¼ï¼éé»æè¦ãæ±ºå®äºé ãAction Itemsã</div>
       </div>
     `;
   }, 800);
@@ -712,7 +752,7 @@ function renderFeed() {
         <div class="text-sm text-slate-700">${f.text}</div>
       </div>
     `).join('')
-    : '<div class="bg-white rounded-xl border border-slate-100 p-8 text-center text-sm text-slate-400">No updates yet — post the first one!</div>';
+    : '<div class="bg-white rounded-xl border border-slate-100 p-8 text-center text-sm text-slate-400">No updates yet â post the first one!</div>';
 }
 
 function postFeed() {
@@ -747,28 +787,28 @@ async function loadAll() {
 
   try {
     const [tasksData, meetingsData] = await Promise.all([
-      notionQuery(TASKS_DB, [{ property: '優先級', direction: 'ascending' }]),
-      notionQuery(MEETINGS_DB, [{ property: '日期', direction: 'descending' }]),
+      notionQuery(TASKS_DB, [{ property: 'åªåç´', direction: 'ascending' }]),
+      notionQuery(MEETINGS_DB, [{ property: 'æ¥æ', direction: 'descending' }]),
     ]);
 
     allTasks = tasksData.results.map(r => ({
       id: r.id,
-      name: getProp(r.properties, '任務名稱', 'title'),
-      priority: getProp(r.properties, '優先級', 'select'),
-      status: getProp(r.properties, '狀態', 'select'),
-      category: getProp(r.properties, '類別', 'select'),
-      owner: getProp(r.properties, '負責人', 'select'),
-      due: getProp(r.properties, '截止日期', 'date'),
+      name: getProp(r.properties, 'ä»»ååç¨±', 'title'),
+      priority: getProp(r.properties, 'åªåç´', 'select'),
+      status: getProp(r.properties, 'çæ', 'select'),
+      category: getProp(r.properties, 'é¡å¥', 'select'),
+      owner: getProp(r.properties, 'è² è²¬äºº', 'select'),
+      due: getProp(r.properties, 'æªæ­¢æ¥æ', 'date'),
     }));
 
     allMeetings = meetingsData.results.map(r => ({
       id: r.id,
-      title: getProp(r.properties, '會議主題', 'title'),
-      date: getProp(r.properties, '日期', 'date'),
-      type: getProp(r.properties, '類型', 'select'),
-      attendees: getProp(r.properties, '出席者', 'multi_select'),
-      summary: getProp(r.properties, '重點摘要', 'text'),
-      decisions: getProp(r.properties, '決議事項', 'text'),
+      title: getProp(r.properties, 'æè­°ä¸»é¡', 'title'),
+      date: getProp(r.properties, 'æ¥æ', 'date'),
+      type: getProp(r.properties, 'é¡å', 'select'),
+      attendees: getProp(r.properties, 'åºå¸­è', 'multi_select'),
+      summary: getProp(r.properties, 'éé»æè¦', 'text'),
+      decisions: getProp(r.properties, 'æ±ºè­°äºé ', 'text'),
     }));
 
     updateDashMetrics();
@@ -786,6 +826,151 @@ async function loadAll() {
 }
 
 loadAll();
+
+
+// ── DOCS ──────────────────────────────────────────────────────
+const DOCS_DB = 'DOCS_DB_PLACEHOLDER';
+
+const CAT_COLORS = {
+  '法律':  'bg-purple-100 text-purple-700',
+  '財務':  'bg-green-100 text-green-700',
+  '產品':  'bg-blue-100 text-blue-700',
+  '行銷':  'bg-pink-100 text-pink-700',
+  'HR':    'bg-orange-100 text-orange-700',
+  '其他':  'bg-slate-100 text-slate-600',
+};
+
+const CAT_ICONS = {
+  '法律':  '⚖️',
+  '財務':  '💰',
+  '產品':  '🛠',
+  '行銷':  '📣',
+  'HR':    '👥',
+  '其他':  '📄',
+};
+
+let allDocs = [];
+
+function docCard(d) {
+  const props = d.properties || {};
+  const title = (props['文件名稱']?.title?.[0]?.plain_text) || (props['Name']?.title?.[0]?.plain_text) || '無標題';
+  const cat   = props['類別']?.select?.name || props['Category']?.select?.name || '其他';
+  const owner = props['負責人']?.select?.name || props['Owner']?.select?.name || '—';
+  const status= props['狀態']?.select?.name || props['Status']?.select?.name || '';
+  const desc  = (props['描述']?.rich_text?.[0]?.plain_text) || (props['Description']?.rich_text?.[0]?.plain_text) || '';
+  const url   = d.url || '#';
+  const editedRaw = d.last_edited_time;
+  const edited = editedRaw ? new Date(editedRaw).toLocaleDateString('zh-HK',{month:'short',day:'numeric'}) : '—';
+  const catColor = CAT_COLORS[cat] || CAT_COLORS['其他'];
+  const catIcon  = CAT_ICONS[cat]  || '📄';
+
+  const statusBadge = status ? `<span class="text-xs px-2 py-0.5 rounded-full ${status==='草稿'?'bg-slate-100 text-slate-500':status==='完成'?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${status}</span>` : '';
+
+  return `
+  <a href="${url}" target="_blank"
+    class="doc-card bg-white rounded-xl border border-slate-100 p-4 hover:border-navy/30 hover:shadow-sm transition-all flex items-start gap-3 group"
+    data-cat="${cat}">
+    <div class="w-9 h-9 rounded-lg bg-navy-light flex items-center justify-center text-lg flex-shrink-0">${catIcon}</div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-start justify-between gap-2">
+        <div class="text-sm font-medium text-navy truncate group-hover:text-navy-2">${title}</div>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          ${statusBadge}
+          <span class="text-xs px-2 py-0.5 rounded-full font-medium ${catColor}">${cat}</span>
+        </div>
+      </div>
+      ${desc ? `<div class="text-xs text-slate-400 mt-1 line-clamp-1">${desc}</div>` : ''}
+      <div class="flex items-center gap-3 mt-2">
+        <span class="text-xs text-slate-400">👤 ${owner}</span>
+        <span class="text-xs text-slate-300">•</span>
+        <span class="text-xs text-slate-400">🕐 ${edited}</span>
+        <svg class="w-3 h-3 text-slate-300 ml-auto group-hover:text-navy transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </div>
+    </div>
+  </a>`;
+}
+
+function filterDocs(cat, btn) {
+  document.querySelectorAll('.doc-filter').forEach(b => {
+    b.classList.remove('active-chip');
+    b.classList.add('border-slate-200','text-slate-600');
+  });
+  btn.classList.add('active-chip');
+  btn.classList.remove('border-slate-200','text-slate-600');
+  const filtered = cat === 'all' ? allDocs : allDocs.filter(d => {
+    const props = d.properties || {};
+    const c = props['類別']?.select?.name || props['Category']?.select?.name || '其他';
+    return c === cat;
+  });
+  renderDocs(filtered);
+}
+
+function renderDocs(docs) {
+  const grid = document.getElementById('docs-grid');
+  if (!docs.length) {
+    grid.innerHTML = '<div class="col-span-full text-center text-slate-400 text-sm py-12">暫時沒有文件</div>';
+    return;
+  }
+  grid.innerHTML = docs.map(docCard).join('');
+}
+
+async function loadDocs() {
+  if (DOCS_DB === 'DOCS_DB_PLACEHOLDER') {
+    // Show template cards when no DB configured yet
+    document.getElementById('docs-total').textContent = '—';
+    document.getElementById('docs-recent').textContent = '—';
+    document.getElementById('docs-owners').textContent = '—';
+    document.getElementById('docs-grid').innerHTML = `
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 flex gap-3 items-start col-span-full">
+        <span class="text-xl">⚙️</span>
+        <div>
+          <div class="font-medium mb-1">設定 Docs Database</div>
+          <div class="text-xs text-amber-700">請在 Notion 建立文件 database，然後將 ID 填入 index.html 的 <code class="bg-amber-100 px-1 rounded">DOCS_DB</code> 常數。</div>
+        </div>
+      </div>
+      ${[
+        {t:'公司簡介', c:'產品', o:'Harry', s:'完成', d:'LBID 平台概覽與定位'},
+        {t:'CCMF 申請書', c:'法律', o:'Harry', s:'進行中', d:'Cyberport 微型基金申請文件'},
+        {t:'Q3 財務預算', c:'財務', o:'Partner', s:'草稿', d:'2026 Q3 運營開支規劃'},
+        {t:'用戶訪談報告', c:'產品', o:'Harry', s:'完成', d:'東南亞物流客戶訪談總結'},
+        {t:'品牌設計規範', c:'行銷', o:'Partner', s:'草稿', d:'Logo、配色、字型指南'},
+        {t:'合夥人協議', c:'法律', o:'Harry', s:'進行中', d:'公司股權及責任劃分'},
+      ].map(doc => `
+        <div class="bg-white rounded-xl border border-dashed border-slate-200 p-4 flex items-start gap-3 opacity-60">
+          <div class="w-9 h-9 rounded-lg bg-navy-light flex items-center justify-center text-lg flex-shrink-0">${CAT_ICONS[doc.c]||'📄'}</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div class="text-sm font-medium text-navy">${doc.t}</div>
+              <div class="flex gap-1.5">
+                <span class="text-xs px-2 py-0.5 rounded-full ${doc.s==='完成'?'bg-green-100 text-green-700':doc.s==='進行中'?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-500'}">${doc.s}</span>
+                <span class="text-xs px-2 py-0.5 rounded-full font-medium ${CAT_COLORS[doc.c]||CAT_COLORS['其他']}">${doc.c}</span>
+              </div>
+            </div>
+            <div class="text-xs text-slate-400 mt-1">${doc.d}</div>
+            <div class="text-xs text-slate-400 mt-2">👤 ${doc.o}</div>
+          </div>
+        </div>`).join('')}
+    `;
+    return;
+  }
+  try {
+    const data = await notionQuery(DOCS_DB, { sorts:[{timestamp:'last_edited_time',direction:'descending'}] });
+    allDocs = data.results || [];
+    document.getElementById('docs-total').textContent = allDocs.length;
+    const now = new Date();
+    const weekAgo = new Date(now - 7*24*60*60*1000);
+    const recentCount = allDocs.filter(d => new Date(d.last_edited_time) > weekAgo).length;
+    document.getElementById('docs-recent').textContent = recentCount;
+    const owners = new Set(allDocs.map(d => {
+      const p = d.properties||{};
+      return p['負責人']?.select?.name || p['Owner']?.select?.name || null;
+    }).filter(Boolean));
+    document.getElementById('docs-owners').textContent = owners.size || '—';
+    renderDocs(allDocs);
+  } catch(e) {
+    document.getElementById('docs-grid').innerHTML = `<div class="col-span-full text-red-500 text-sm p-4">Error: ${e.message}</div>`;
+  }
+}
 </script>
 </body>
 </html>
