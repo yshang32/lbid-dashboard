@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/notion", "destination": "/api/notion.js" },
+    { "source": "/api/:path*", "destination": "/api/notion.js" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
