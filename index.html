@@ -89,7 +89,7 @@ tailwind.config = {
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
         Feed
       </button>
-      <button onclick="nav('docs')" id="nav-docs" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+      <button onclick="nav('docs');loadDocs()" id="nav-docs" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         Docs
       </button>
@@ -353,9 +353,9 @@ tailwind.config = {
           <div class="flex gap-2 flex-wrap">
             <button onclick="filterDocs('all',this)" class="doc-filter active-chip text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">All</button>
             <button onclick="filterDocs('Legal',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">&#27861;&#24459;</button>
-            <button onclick="filterDocs('Finance',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">&#36131;&#21153;</button>
+            <button onclick="filterDocs('Finance',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">&#36001;&#21209;</button>
             <button onclick="filterDocs('Product',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">&#29986;&#21697;</button>
-            <button onclick="filterDocs('Marketing',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">&#34892;&#37428;</button>
+            <button onclick="filterDocs('Marketing',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">&#34892;&#37559;</button>
             <button onclick="filterDocs('HR',this)" class="doc-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">HR</button>
           </div>
           <a id="docs-new-btn" href="https://www.notion.so/new" target="_blank" class="flex items-center gap-1.5 bg-navy text-white text-xs px-3 py-1.5 rounded-lg hover:bg-navy-2 transition-colors">
@@ -821,6 +821,7 @@ async function loadAll() {
   } catch (e) {
     document.getElementById('ov-loading').innerHTML = `<div class="text-red-500 text-sm">Error: ${e.message}</div>`;
     document.getElementById('last-sync').textContent = 'Sync failed';
+  loadDocs();
   }
 }
 
