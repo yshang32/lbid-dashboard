@@ -315,7 +315,7 @@
 const NOTION_TOKEN = null; // Token is stored server-side in Vercel env vars
 const TASKS_DB = '1f07a3124fef41329cd0a391ff676374';
 const MEETINGS_DB = 'eb4c2a01c5a9482a956c71c64e1241fd';
-const PROXY = '/api';
+const PROXY = '/api/notion?path=';
 
 let allTasks = [];
 let allMeetings = [];
@@ -323,7 +323,7 @@ let allMeetings = [];
 async function notionQuery(dbId, sorts) {
   const body = { page_size: 100 };
   if (sorts) body.sorts = sorts;
-  const res = await fetch(`${PROXY}/databases/${dbId}/query`, {
+  const res = await fetch(`${PROXY}databases/${dbId}/query`, {
     method: 'POST',
     headers: {
       'X-Requested-With': 'lbid-dashboard',
