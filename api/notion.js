@@ -5,8 +5,9 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const url = req.url.replace('/api/', '');
-  const notionUrl = `https://api.notion.com/v1/${url}`;
+  // Extract path after /api/
+  const path = req.url.split('/api/')[1] || '';
+  const notionUrl = `https://api.notion.com/v1/${path}`;
 
   try {
     const response = await fetch(notionUrl, {
