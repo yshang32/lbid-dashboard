@@ -4,335 +4,399 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>LBID Team Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: { DEFAULT: '#0c1a3e', 2: '#1b2b5e', light: '#e8edf8' },
+        gold: { DEFAULT: '#c49a3c', soft: '#fff7df' },
+      },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --navy: #0c1a3e;
-    --navy-2: #1b2b5e;
-    --gold: #c49a3c;
-    --gold-soft: #fff7df;
-    --ink: #111827;
-    --muted: #667085;
-    --line: #e5e7eb;
-    --canvas: #f7f8fb;
-    --white: #ffffff;
-    --green: #12805c;
-    --green-bg: #e8f7ef;
-    --red: #b42318;
-    --red-bg: #fee4e2;
-    --blue: #1d4ed8;
-    --blue-bg: #eff6ff;
-    --amber: #92400e;
-    --amber-bg: #fffbeb;
-    --gray-bg: #f3f4f6;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; background: var(--canvas); color: var(--ink); line-height: 1.5; }
-  a { color: var(--navy-2); text-decoration: none; }
-
-  .shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
-
-  /* Sidebar */
-  .sb { background: var(--white); border-right: 1px solid var(--line); padding: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
-  .sb-top { padding: 20px 16px 16px; border-bottom: 1px solid var(--line); }
-  .sb-logo { display: flex; align-items: center; gap: 10px; }
-  .sb-icon { width: 32px; height: 32px; background: var(--navy); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; }
-  .sb-name { font-size: 15px; font-weight: 600; color: var(--navy); }
-  .sb-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .sb-section { padding: 12px 8px 4px; }
-  .sb-label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; padding: 0 8px 6px; }
-  .sb-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; color: #374151; transition: background .1s; border: none; background: none; width: 100%; text-align: left; }
-  .sb-item:hover { background: var(--canvas); color: var(--navy); }
-  .sb-item.active { background: var(--blue-bg); color: var(--blue); font-weight: 500; }
-  .sb-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-  .sb-badge { margin-left: auto; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 999px; }
-  .sb-badge-red { background: var(--red-bg); color: var(--red); }
-  .sb-badge-green { background: var(--green-bg); color: var(--green); }
-  .sb-members { margin-top: auto; padding: 12px 8px; border-top: 1px solid var(--line); }
-  .sb-member { display: flex; align-items: center; gap: 8px; padding: 5px 10px; }
-  .av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
-  .av-h { background: var(--blue-bg); color: var(--blue); }
-  .av-p { background: var(--amber-bg); color: var(--amber); }
-  .sb-mname { font-size: 12px; color: var(--muted); }
-  .online { position: relative; }
-  .online::after { content: ''; position: absolute; bottom: 0; right: 0; width: 7px; height: 7px; border-radius: 50%; background: #22c55e; border: 1.5px solid white; }
-
-  /* Main */
-  .main { display: flex; flex-direction: column; }
-  .topbar { background: var(--white); border-bottom: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
-  .page-title { font-size: 16px; font-weight: 600; color: var(--navy); }
-  .topbar-right { display: flex; align-items: center; gap: 8px; }
-  .last-sync { font-size: 12px; color: var(--muted); }
-  .sync-btn { display: flex; align-items: center; gap: 4px; padding: 6px 12px; background: var(--navy); color: white; border: none; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: inherit; }
-  .sync-btn:hover { background: var(--navy-2); }
-  .sync-btn svg { width: 14px; height: 14px; }
-  .content { flex: 1; padding: 24px; }
-
-  /* Panes */
-  .pane { display: none; }
-  .pane.active { display: block; }
-
-  /* Loading */
-  .loading { display: flex; align-items: center; justify-content: center; min-height: 300px; flex-direction: column; gap: 12px; }
-  .spinner { width: 28px; height: 28px; border: 2px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin .7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { font-size: 13px; color: var(--muted); }
-  .error-box { background: var(--red-bg); border: 1px solid #fecaca; border-radius: 12px; padding: 16px; color: var(--red); font-size: 13px; }
-
-  /* Metric cards */
-  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-  .mc { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
-  .mc-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
-  .mc-val { font-size: 26px; font-weight: 600; color: var(--navy); margin-top: 4px; }
-  .mc-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-  /* CCMF countdown */
-  .ccmf-card { background: var(--navy); border-radius: 14px; padding: 16px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
-  .ccmf-days { font-size: 42px; font-weight: 700; color: var(--gold); line-height: 1; }
-  .ccmf-days-label { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 2px; }
-  .ccmf-info { flex: 1; }
-  .ccmf-title { font-size: 14px; font-weight: 600; color: white; }
-  .ccmf-sub { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 3px; }
-  .ccmf-bar-wrap { margin-top: 10px; }
-  .ccmf-bar-track { height: 5px; background: rgba(255,255,255,.15); border-radius: 999px; overflow: hidden; }
-  .ccmf-bar-fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width .5s ease; }
-  .ccmf-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--gold); margin-top: 8px; }
-
-  /* Section header */
-  .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .sec-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
-  .sec-link { font-size: 12px; color: var(--blue); }
-
-  /* Task list */
-  .task-list { display: flex; flex-direction: column; gap: 6px; }
-  .task-item { display: flex; align-items: center; gap: 10px; background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; transition: border-color .1s; }
-  .task-item:hover { border-color: #d1d5db; }
-  .task-name { flex: 1; font-size: 13px; color: var(--ink); }
-  .task-cat { font-size: 11px; color: var(--muted); }
-  .task-due { font-size: 11px; color: var(--muted); white-space: nowrap; }
-
-  /* Pills */
-  .pill { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
-  .pill-p0 { background: var(--red-bg); color: var(--red); }
-  .pill-p1 { background: var(--amber-bg); color: var(--amber); }
-  .pill-p2 { background: #fef9c3; color: #854d0e; }
-  .pill-p3 { background: var(--gray-bg); color: var(--muted); }
-  .pill-not { background: var(--gray-bg); color: var(--muted); }
-  .pill-wip { background: var(--blue-bg); color: var(--blue); }
-  .pill-done { background: var(--green-bg); color: var(--green); }
-  .pill-block { background: var(--red-bg); color: var(--red); }
-  .pill-test { background: #fef9c3; color: #854d0e; }
-
-  /* Filter chips */
-  .filter-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-  .chip { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); font-size: 12px; color: var(--muted); cursor: pointer; font-family: inherit; transition: all .1s; }
-  .chip:hover { border-color: #d1d5db; color: var(--ink); }
-  .chip.active { background: var(--navy); color: white; border-color: var(--navy); }
-
-  /* Progress bar */
-  .prog-card { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; }
-  .prog-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-  .prog-track { height: 6px; background: var(--canvas); border-radius: 999px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 999px; background: var(--navy); transition: width .6s ease; }
-
-  /* Meetings */
-  .mtg-list { display: flex; flex-direction: column; gap: 8px; }
-  .mtg-item { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
-  .mtg-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .mtg-title { font-size: 13px; font-weight: 500; color: var(--ink); }
-  .mtg-date { font-size: 11px; color: var(--muted); white-space: nowrap; }
-  .mtg-body { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.6; }
-  .mtg-tags { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
-  .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; }
-  .tag-blue { background: var(--blue-bg); color: var(--blue); }
-  .tag-green { background: var(--green-bg); color: var(--green); }
-  .tag-muted { background: var(--gray-bg); color: var(--muted); }
-
-  /* Flow */
-  .flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 14px; padding: 12px 14px; background: var(--canvas); border-radius: 10px; }
-  .flow-step { font-size: 12px; padding: 4px 10px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; color: var(--ink); }
-  .flow-arrow { color: var(--gold); font-weight: 700; font-size: 14px; }
-  .flow-end { background: var(--green-bg); border-color: #bbf7d0; color: var(--green); }
-
-  /* Empty */
-  .empty { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
-
-  @media (max-width: 768px) {
-    .shell { grid-template-columns: 1fr; }
-    .sb { position: relative; height: auto; }
-    .metrics { grid-template-columns: repeat(2, 1fr); }
-    .ccmf-card { flex-direction: column; align-items: flex-start; }
-  }
+  body { font-family: 'Inter', sans-serif; }
+  .gantt-bar { transition: width 0.5s ease; }
+  .status-btn:hover { filter: brightness(0.92); }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+  .toast { animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards; }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes fadeOut { to { opacity: 0; } }
 </style>
 </head>
-<body>
-<div class="shell">
-  <aside class="sb">
-    <div class="sb-top">
-      <div class="sb-logo">
-        <div class="sb-icon">🚢</div>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+  <div class="toast bg-navy text-white text-sm px-4 py-3 rounded-xl shadow-lg flex items-center gap-2">
+    <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+    <span id="toast-msg">Updated</span>
+  </div>
+</div>
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-56 bg-white border-r border-slate-100 flex flex-col flex-shrink-0">
+    <div class="p-4 border-b border-slate-100">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center text-lg">🚢</div>
         <div>
-          <div class="sb-name">LBID</div>
-          <div class="sb-sub">Team workspace</div>
+          <div class="text-sm font-semibold text-navy">LBID</div>
+          <div class="text-xs text-slate-400">Team workspace</div>
         </div>
       </div>
     </div>
-    <div class="sb-section">
-      <div class="sb-label">Navigation</div>
-      <button class="sb-item active" onclick="nav('dash',this)">
-        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+
+    <nav class="flex-1 p-2 space-y-0.5 overflow-y-auto">
+      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-2">Navigation</div>
+      <button onclick="nav('overview')" id="nav-overview" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors active-nav">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Overview
       </button>
-      <button class="sb-item" onclick="nav('tasks',this)">
-        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        Tasks
-        <span class="sb-badge sb-badge-red" id="sb-p0-count">—</span>
+      <button onclick="nav('timeline')" id="nav-timeline" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        Timeline
       </button>
-      <button class="sb-item" onclick="nav('meetings',this)">
-        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <button onclick="nav('schedule')" id="nav-schedule" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Schedule
+      </button>
+      <button onclick="nav('tasks')" id="nav-tasks" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        Tasks
+        <span id="sb-p0" class="ml-auto text-xs font-semibold bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full">—</span>
+      </button>
+      <button onclick="nav('ccmf')" id="nav-ccmf" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        CCMF
+        <span class="ml-auto text-xs font-semibold bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full" id="sb-ccmf-days">—d</span>
+      </button>
+      <button onclick="nav('meetings')" id="nav-meetings" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         Meetings
       </button>
-    </div>
-    <div class="sb-section">
-      <div class="sb-label">Quick links</div>
-      <a class="sb-item" href="https://app.notion.com/p/1f07a3124fef41329cd0a391ff676374" target="_blank">
-        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Notion timeline
+      <button onclick="nav('feed')" id="nav-feed" class="nav-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Feed
+      </button>
+
+      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-2 mt-2">Links</div>
+      <a href="https://app.notion.com/p/1f07a3124fef41329cd0a391ff676374" target="_blank" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Notion
       </a>
-      <a class="sb-item" href="https://lbid.vercel.app" target="_blank">
-        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Production app
+      <a href="https://lbid.vercel.app" target="_blank" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Production
       </a>
-    </div>
-    <div class="sb-members">
-      <div class="sb-label">Team</div>
-      <div class="sb-member"><div class="av av-h online">H</div><div class="sb-mname">Harry</div></div>
-      <div class="sb-member"><div class="av av-p online">P</div><div class="sb-mname">Partner</div></div>
+    </nav>
+
+    <div class="p-2 border-t border-slate-100">
+      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-2">Team</div>
+      <div class="flex items-center gap-2 px-3 py-1.5">
+        <div class="relative"><div class="w-6 h-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-semibold">H</div><div class="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full border border-white"></div></div>
+        <span class="text-xs text-slate-500">Harry</span>
+      </div>
+      <div class="flex items-center gap-2 px-3 py-1.5">
+        <div class="relative"><div class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-semibold">P</div><div class="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full border border-white"></div></div>
+        <span class="text-xs text-slate-500">Partner</span>
+      </div>
     </div>
   </aside>
 
-  <div class="main">
-    <div class="topbar">
-      <div class="page-title" id="page-title">Overview</div>
-      <div class="topbar-right">
-        <span class="last-sync" id="last-sync">Loading...</span>
-        <button class="sync-btn" onclick="loadAll()">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+  <!-- Main -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <!-- Topbar -->
+    <div class="bg-white border-b border-slate-100 px-6 py-3 flex items-center justify-between flex-shrink-0">
+      <h1 class="text-base font-semibold text-navy" id="page-title">Overview</h1>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-slate-400" id="last-sync">Loading...</span>
+        <button onclick="loadAll()" class="flex items-center gap-1.5 bg-navy text-white text-xs px-3 py-1.5 rounded-lg hover:bg-navy-2 transition-colors">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           Refresh
         </button>
       </div>
     </div>
 
-    <div class="content">
+    <!-- Content -->
+    <div class="flex-1 overflow-y-auto p-6">
 
       <!-- OVERVIEW -->
-      <div class="pane active" id="pane-dash">
-        <div id="dash-loading" class="loading"><div class="spinner"></div><div class="loading-text">Loading from Notion...</div></div>
-        <div id="dash-content" style="display:none">
-          <div class="ccmf-card">
-            <div>
-              <div class="ccmf-days" id="ccmf-days">—</div>
-              <div class="ccmf-days-label">days left</div>
+      <div id="pane-overview" class="pane fade-in">
+        <div id="ov-loading" class="flex items-center justify-center h-64"><div class="animate-spin w-6 h-6 border-2 border-slate-200 border-t-navy rounded-full"></div></div>
+        <div id="ov-content" class="hidden space-y-5">
+          <!-- CCMF Banner -->
+          <div class="bg-navy rounded-2xl p-5 flex items-center gap-6">
+            <div class="text-center flex-shrink-0">
+              <div class="text-5xl font-bold text-gold" id="ov-days">—</div>
+              <div class="text-xs text-slate-400 mt-1">days left</div>
             </div>
-            <div class="ccmf-info">
-              <div class="ccmf-title">CCMF 申請倒計時</div>
-              <div class="ccmf-sub">Cyberport Creative Micro Fund · 截止 2026-08-01</div>
-              <div class="ccmf-bar-wrap">
-                <div class="ccmf-bar-track"><div class="ccmf-bar-fill" id="ccmf-bar" style="width:0%"></div></div>
+            <div class="flex-1">
+              <div class="text-sm font-semibold text-white">CCMF 申請倒計時</div>
+              <div class="text-xs text-slate-400 mt-1">Cyberport Creative Micro Fund · 截止 2026-08-01</div>
+              <div class="mt-3 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div class="h-full bg-gold rounded-full transition-all duration-700" id="ov-bar" style="width:0%"></div>
               </div>
-              <a class="ccmf-link" href="https://app.notion.com/p/b7db2e765e604b0eb773583066b74622" target="_blank">查看 Cyberport Timeline →</a>
+              <a href="#" onclick="nav('ccmf')" class="inline-block mt-2 text-xs text-gold hover:underline">查看 CCMF 專頁 →</a>
             </div>
           </div>
-          <div class="metrics">
-            <div class="mc"><div class="mc-label">Total tasks</div><div class="mc-val" id="m-total">—</div><div class="mc-sub">P0 to P3</div></div>
-            <div class="mc"><div class="mc-label">P0 critical</div><div class="mc-val" style="color:var(--red)" id="m-p0">—</div><div class="mc-sub">need attention</div></div>
-            <div class="mc"><div class="mc-label">In progress</div><div class="mc-val" style="color:var(--blue)" id="m-wip">—</div><div class="mc-sub">active tasks</div></div>
-            <div class="mc"><div class="mc-label">Completed</div><div class="mc-val" style="color:var(--green)" id="m-done">—</div><div class="mc-sub">tasks done</div></div>
+          <!-- Metrics -->
+          <div class="grid grid-cols-4 gap-3">
+            <div class="bg-white rounded-xl p-4 border border-slate-100">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total tasks</div>
+              <div class="text-3xl font-semibold text-navy mt-1" id="m-total">—</div>
+              <div class="text-xs text-slate-400 mt-1">P0 to P3</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-100">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">P0 critical</div>
+              <div class="text-3xl font-semibold text-red-600 mt-1" id="m-p0">—</div>
+              <div class="text-xs text-slate-400 mt-1">need attention</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-100">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">In progress</div>
+              <div class="text-3xl font-semibold text-blue-600 mt-1" id="m-wip">—</div>
+              <div class="text-xs text-slate-400 mt-1">active tasks</div>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-slate-100">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Completed</div>
+              <div class="text-3xl font-semibold text-green-600 mt-1" id="m-done">—</div>
+              <div class="text-xs text-slate-400 mt-1">tasks done</div>
+            </div>
           </div>
-          <div class="prog-card">
-            <div class="prog-top"><span>Launch readiness</span><span id="prog-pct">0%</span></div>
-            <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+          <!-- Progress -->
+          <div class="bg-white rounded-xl p-4 border border-slate-100">
+            <div class="flex justify-between text-xs text-slate-500 mb-2"><span>Launch readiness</span><span id="m-pct">0%</span></div>
+            <div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-navy rounded-full transition-all duration-700" id="m-bar" style="width:0%"></div></div>
           </div>
-          <div class="sec-head">
-            <div class="sec-title">P0 — this week</div>
-            <a class="sec-link" onclick="nav('tasks', document.querySelectorAll('.sb-item')[1])">See all →</a>
+          <!-- P0 List -->
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">P0 — this week</div>
+              <button onclick="nav('tasks')" class="text-xs text-blue-600 hover:underline">See all →</button>
+            </div>
+            <div class="space-y-2" id="ov-p0-list"></div>
           </div>
-          <div class="task-list" id="dash-p0-list"></div>
         </div>
-        <div id="dash-error" style="display:none" class="error-box"></div>
+      </div>
+
+      <!-- TIMELINE (Gantt) -->
+      <div id="pane-timeline" class="pane hidden fade-in">
+        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
+          <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="text-sm font-semibold text-navy">Gantt Timeline</div>
+            <div class="flex gap-2">
+              <button onclick="filterGantt('all',this)" class="gantt-filter active-chip text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50">All</button>
+              <button onclick="filterGantt('P0',this)" class="gantt-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50">P0</button>
+              <button onclick="filterGantt('P1',this)" class="gantt-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50">P1</button>
+              <button onclick="filterGantt('P2',this)" class="gantt-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50">P2</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <div id="gantt-container" class="min-w-full"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHEDULE (Weekly) -->
+      <div id="pane-schedule" class="pane hidden fade-in">
+        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
+          <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="text-sm font-semibold text-navy">Weekly schedule</div>
+            <div class="flex items-center gap-2">
+              <button onclick="prevWeek()" class="p-1.5 rounded-lg hover:bg-slate-50 border border-slate-200">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <span class="text-sm font-medium text-navy" id="week-label">This week</span>
+              <button onclick="nextWeek()" class="p-1.5 rounded-lg hover:bg-slate-50 border border-slate-200">
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+          <div id="schedule-grid" class="p-4"></div>
+        </div>
       </div>
 
       <!-- TASKS -->
-      <div class="pane" id="pane-tasks">
-        <div id="tasks-loading" class="loading"><div class="spinner"></div><div class="loading-text">Loading tasks...</div></div>
-        <div id="tasks-content" style="display:none">
-          <div class="filter-row">
-            <button class="chip active" onclick="filterTasks('all',this)">All</button>
-            <button class="chip" onclick="filterTasks('P0',this)">P0</button>
-            <button class="chip" onclick="filterTasks('P1',this)">P1</button>
-            <button class="chip" onclick="filterTasks('P2',this)">P2</button>
-            <button class="chip" onclick="filterTasks('P3',this)">P3</button>
-            <button class="chip" onclick="filterTasks('進行中',this)">進行中</button>
-            <button class="chip" onclick="filterTasks('未開始',this)">未開始</button>
-            <button class="chip" onclick="filterTasks('完成',this)">完成</button>
-          </div>
-          <div class="task-list" id="tasks-list"></div>
+      <div id="pane-tasks" class="pane hidden fade-in">
+        <div class="flex gap-2 mb-4 flex-wrap">
+          <button onclick="filterTasks('all',this)" class="task-filter active-chip text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">All</button>
+          <button onclick="filterTasks('P0',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">P0</button>
+          <button onclick="filterTasks('P1',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">P1</button>
+          <button onclick="filterTasks('P2',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">P2</button>
+          <button onclick="filterTasks('P3',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">P3</button>
+          <button onclick="filterTasks('進行中',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">進行中</button>
+          <button onclick="filterTasks('未開始',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">未開始</button>
+          <button onclick="filterTasks('完成',this)" class="task-filter text-xs px-3 py-1.5 rounded-full border border-slate-200 text-slate-600">完成</button>
         </div>
-        <div id="tasks-error" style="display:none" class="error-box"></div>
+        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
+          <div id="tasks-list" class="divide-y divide-slate-50"></div>
+        </div>
+      </div>
+
+      <!-- CCMF -->
+      <div id="pane-ccmf" class="pane hidden fade-in space-y-5">
+        <div class="bg-navy rounded-2xl p-6">
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Cyberport Creative Micro Fund</div>
+          <div class="flex items-end gap-4">
+            <div><div class="text-6xl font-bold text-gold" id="ccmf-days2">—</div><div class="text-sm text-slate-400 mt-1">days remaining</div></div>
+            <div class="flex-1 pb-1">
+              <div class="flex justify-between text-xs text-slate-400 mb-2"><span>Progress</span><span id="ccmf-pct2">0%</span></div>
+              <div class="h-2 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-gold rounded-full transition-all" id="ccmf-bar2" style="width:0%"></div></div>
+              <div class="flex justify-between text-xs text-slate-500 mt-2"><span>28 Jun 2026</span><span>1 Aug 2026</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-navy" id="ccmf-biz">—</div>
+            <div class="text-xs text-slate-400 mt-1">商業任務</div>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-amber-600" id="ccmf-wip">—</div>
+            <div class="text-xs text-slate-400 mt-1">進行中</div>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-green-600" id="ccmf-done">—</div>
+            <div class="text-xs text-slate-400 mt-1">已完成</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
+          <div class="p-4 border-b border-slate-100 text-sm font-semibold text-navy">CCMF 相關任務</div>
+          <div id="ccmf-tasks" class="divide-y divide-slate-50"></div>
+        </div>
+        <div class="bg-amber-50 border border-amber-100 rounded-xl p-4">
+          <div class="text-sm font-semibold text-amber-800 mb-2">申請 Checklist</div>
+          <div class="space-y-2 text-sm text-amber-700">
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 產品 Demo 影片</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 商業計劃書</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 技術架構文件</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 團隊背景資料</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 財務預算</label>
+            <label class="flex items-center gap-2"><input type="checkbox" class="rounded"/> 市場分析</label>
+          </div>
+        </div>
       </div>
 
       <!-- MEETINGS -->
-      <div class="pane" id="pane-meetings">
-        <div id="meetings-loading" class="loading"><div class="spinner"></div><div class="loading-text">Loading meetings...</div></div>
-        <div id="meetings-content" style="display:none">
-          <div class="metrics" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
-            <div class="mc"><div class="mc-label">Meeting cadence</div><div class="mc-val">3–4×</div><div class="mc-sub">per week</div></div>
-            <div class="mc"><div class="mc-label">Target duration</div><div class="mc-val">15–30m</div><div class="mc-sub">per session</div></div>
-            <div class="mc"><div class="mc-label">Total logged</div><div class="mc-val" id="m-mtg-count">—</div><div class="mc-sub">meetings</div></div>
+      <div id="pane-meetings" class="pane hidden fade-in">
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-navy">3–4×</div>
+            <div class="text-xs text-slate-400 mt-1">per week</div>
           </div>
-          <div class="sec-head">
-            <div class="sec-title">Meeting records</div>
-            <a class="sec-link" href="https://app.notion.com/p/eb4c2a01c5a9482a956c71c64e1241fd" target="_blank">Open in Notion →</a>
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-navy">15–30m</div>
+            <div class="text-xs text-slate-400 mt-1">per session</div>
           </div>
-          <div class="mtg-list" id="meetings-list"></div>
-          <div class="flow">
-            <span class="flow-step">Craig Bot 錄音</span>
-            <span class="flow-arrow">→</span>
-            <span class="flow-step">轉文字</span>
-            <span class="flow-arrow">→</span>
-            <span class="flow-step">貼給 Claude</span>
-            <span class="flow-arrow">→</span>
-            <span class="flow-step flow-end">存 Notion</span>
+          <div class="bg-white rounded-xl p-4 border border-slate-100 text-center">
+            <div class="text-2xl font-semibold text-navy" id="mtg-count">—</div>
+            <div class="text-xs text-slate-400 mt-1">meetings logged</div>
           </div>
         </div>
-        <div id="meetings-error" style="display:none" class="error-box"></div>
+        <!-- AI Summary Input -->
+        <div class="bg-white rounded-2xl border border-slate-100 p-4 mb-5">
+          <div class="text-sm font-semibold text-navy mb-2">貼入會議記錄 → AI 整理摘要</div>
+          <textarea id="meeting-input" class="w-full text-sm border border-slate-200 rounded-xl p-3 h-28 resize-none focus:outline-none focus:border-navy/40 text-slate-700" placeholder="把 Craig Bot / Meetily 的會議轉錄文字貼在這裡..."></textarea>
+          <div class="flex gap-2 mt-2">
+            <button onclick="summarizeMeeting()" class="flex items-center gap-1.5 bg-navy text-white text-xs px-4 py-2 rounded-lg hover:bg-navy-2 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              AI 整理摘要
+            </button>
+            <button onclick="clearMeeting()" class="text-xs px-4 py-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50">清除</button>
+          </div>
+          <div id="ai-summary" class="hidden mt-3 bg-green-50 border border-green-100 rounded-xl p-4 text-sm text-slate-700 leading-relaxed"></div>
+        </div>
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Meeting records</div>
+          <a href="https://app.notion.com/p/eb4c2a01c5a9482a956c71c64e1241fd" target="_blank" class="text-xs text-blue-600 hover:underline">Open in Notion →</a>
+        </div>
+        <div class="space-y-3" id="meetings-list"></div>
+      </div>
+
+      <!-- FEED -->
+      <div id="pane-feed" class="pane hidden fade-in">
+        <div class="max-w-2xl space-y-4">
+          <div class="bg-white rounded-2xl border border-slate-100 p-4">
+            <div class="text-sm font-semibold text-navy mb-3">Post an update</div>
+            <textarea id="feed-input" class="w-full text-sm border border-slate-200 rounded-xl p-3 h-20 resize-none focus:outline-none focus:border-navy/40 text-slate-700" placeholder="Share a progress update, idea, or blocker..."></textarea>
+            <div class="flex items-center gap-2 mt-2">
+              <select id="feed-type" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5 text-slate-600 focus:outline-none">
+                <option value="update">Progress update</option>
+                <option value="idea">Idea</option>
+                <option value="blocker">Blocker</option>
+                <option value="done">Completed</option>
+              </select>
+              <button onclick="postFeed()" class="ml-auto bg-navy text-white text-xs px-4 py-1.5 rounded-lg hover:bg-navy-2 transition-colors">Post</button>
+            </div>
+          </div>
+          <div id="feed-list" class="space-y-3"></div>
+        </div>
       </div>
 
     </div>
   </div>
 </div>
 
+<style>
+.nav-btn { font-family: 'Inter', sans-serif; }
+.active-nav { background: #e8edf8; color: #0c1a3e; font-weight: 500; }
+.active-chip { background: #0c1a3e; color: white; border-color: #0c1a3e; }
+.pane { }
+</style>
+
 <script>
-const NOTION_TOKEN = null; // Token is stored server-side in Vercel env vars
 const TASKS_DB = '1f07a3124fef41329cd0a391ff676374';
 const MEETINGS_DB = 'eb4c2a01c5a9482a956c71c64e1241fd';
-const PROXY = '/api/notion?path=';
 
 let allTasks = [];
 let allMeetings = [];
+let feedItems = JSON.parse(localStorage.getItem('lbid-feed') || '[]');
+let weekOffset = 0;
+
+const statusColors = {
+  '未開始': 'bg-slate-100 text-slate-600',
+  '進行中': 'bg-blue-100 text-blue-700',
+  '完成': 'bg-green-100 text-green-700',
+  '封鎖中': 'bg-red-100 text-red-700',
+  '待測試': 'bg-amber-100 text-amber-700',
+};
+const priorityColors = {
+  'P0': 'bg-red-100 text-red-700',
+  'P1': 'bg-amber-100 text-amber-700',
+  'P2': 'bg-yellow-100 text-yellow-700',
+  'P3': 'bg-slate-100 text-slate-500',
+};
+const statusOptions = ['未開始', '進行中', '待測試', '完成', '封鎖中'];
 
 async function notionQuery(dbId, sorts) {
   const body = { page_size: 100 };
   if (sorts) body.sorts = sorts;
-  const res = await fetch(`${PROXY}databases/${dbId}/query`, {
+  const res = await fetch(`/api/notion?path=databases/${dbId}/query`, {
     method: 'POST',
-    headers: {
-      'X-Requested-With': 'lbid-dashboard',
-      'Notion-Version': '2022-06-28',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
+    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'lbid-dashboard' },
+    body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`Notion API error: ${res.status}`);
+  return res.json();
+}
+
+async function notionPatch(pageId, status) {
+  const res = await fetch(`/api/notion?path=pages/${pageId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'lbid-dashboard' },
+    body: JSON.stringify({ properties: { '狀態': { select: { name: status } } } }),
+  });
+  if (!res.ok) throw new Error(`Update failed: ${res.status}`);
   return res.json();
 }
 
@@ -347,111 +411,54 @@ function getProp(props, key, type) {
   return null;
 }
 
-function priorityPill(p) {
-  const map = { P0: 'pill-p0', P1: 'pill-p1', P2: 'pill-p2', P3: 'pill-p3' };
-  return `<span class="pill ${map[p] || 'pill-p3'}">${p || '—'}</span>`;
+function pill(text, colorClass) {
+  return `<span class="text-xs font-medium px-2 py-0.5 rounded-full ${colorClass}">${text}</span>`;
 }
 
-function statusPill(s) {
-  const map = { '未開始': 'pill-not', '進行中': 'pill-wip', '完成': 'pill-done', '封鎖中': 'pill-block', '待測試': 'pill-test' };
-  return `<span class="pill ${map[s] || 'pill-not'}">${s || '—'}</span>`;
-}
-
-function formatDate(d) {
+function fmtDate(d) {
   if (!d) return '';
-  const dt = new Date(d);
-  return dt.toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' });
+  return new Date(d).toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' });
 }
 
-async function loadTasks() {
+function taskRow(t, showStatusBtn = true) {
+  const statusOpts = statusOptions.map(s =>
+    `<option value="${s}" ${s === t.status ? 'selected' : ''}>${s}</option>`
+  ).join('');
+  return `
+    <div class="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors" id="task-${t.id}">
+      ${pill(t.priority || '—', priorityColors[t.priority] || 'bg-slate-100 text-slate-500')}
+      <span class="flex-1 text-sm text-slate-700">${t.name}</span>
+      <span class="text-xs text-slate-400 hidden sm:block">${t.category || ''}</span>
+      ${showStatusBtn ? `
+        <select onchange="updateStatus('${t.id}', this.value, this)" class="text-xs border border-slate-200 rounded-lg px-2 py-1 text-slate-600 focus:outline-none cursor-pointer hover:border-slate-300 bg-white">
+          ${statusOpts}
+        </select>
+      ` : pill(t.status || '—', statusColors[t.status] || 'bg-slate-100 text-slate-500')}
+      <span class="text-xs text-slate-400 w-12 text-right">${t.due ? fmtDate(t.due) : ''}</span>
+    </div>
+  `;
+}
+
+async function updateStatus(pageId, newStatus, selectEl) {
+  selectEl.disabled = true;
   try {
-    const data = await notionQuery(TASKS_DB, [{ property: '優先級', direction: 'ascending' }]);
-    allTasks = data.results.map(r => ({
-      id: r.id,
-      name: getProp(r.properties, '任務名稱', 'title'),
-      priority: getProp(r.properties, '優先級', 'select'),
-      status: getProp(r.properties, '狀態', 'select'),
-      category: getProp(r.properties, '類別', 'select'),
-      owner: getProp(r.properties, '負責人', 'select'),
-      due: getProp(r.properties, '截止日期', 'date'),
-      note: getProp(r.properties, '備註', 'text'),
-    }));
-    renderTasks('all');
+    await notionPatch(pageId, newStatus);
+    const task = allTasks.find(t => t.id === pageId);
+    if (task) task.status = newStatus;
+    showToast(`Updated to "${newStatus}"`);
     updateDashMetrics();
-    document.getElementById('tasks-loading').style.display = 'none';
-    document.getElementById('tasks-content').style.display = 'block';
-    document.getElementById('dash-loading').style.display = 'none';
-    document.getElementById('dash-content').style.display = 'block';
   } catch (e) {
-    showError('tasks', e);
-    showError('dash', e);
+    showToast('Update failed — check Notion connection', true);
+  } finally {
+    selectEl.disabled = false;
   }
 }
 
-async function loadMeetings() {
-  try {
-    const data = await notionQuery(MEETINGS_DB, [{ property: '日期', direction: 'descending' }]);
-    allMeetings = data.results.map(r => ({
-      id: r.id,
-      title: getProp(r.properties, '會議主題', 'title'),
-      date: getProp(r.properties, '日期', 'date'),
-      type: getProp(r.properties, '類型', 'select'),
-      attendees: getProp(r.properties, '出席者', 'multi_select'),
-      summary: getProp(r.properties, '重點摘要', 'text'),
-      decisions: getProp(r.properties, '決議事項', 'text'),
-      followup: getProp(r.properties, 'Follow-up', 'text'),
-    }));
-    renderMeetings();
-    document.getElementById('meetings-loading').style.display = 'none';
-    document.getElementById('meetings-content').style.display = 'block';
-    document.getElementById('m-mtg-count').textContent = allMeetings.length;
-  } catch (e) {
-    showError('meetings', e);
-  }
-}
-
-function renderTasks(filter) {
-  const list = document.getElementById('tasks-list');
-  const filtered = allTasks.filter(t => {
-    if (filter === 'all') return true;
-    if (['P0','P1','P2','P3'].includes(filter)) return t.priority === filter;
-    return t.status === filter;
-  });
-  if (filtered.length === 0) {
-    list.innerHTML = '<div class="empty">No tasks found</div>';
-    return;
-  }
-  list.innerHTML = filtered.map(t => `
-    <div class="task-item">
-      ${priorityPill(t.priority)}
-      <span class="task-name">${t.name}</span>
-      <span class="task-cat">${t.category || ''}</span>
-      ${statusPill(t.status)}
-      <span class="task-due">${t.due ? formatDate(t.due) : ''}</span>
-    </div>
-  `).join('');
-}
-
-function renderMeetings() {
-  const list = document.getElementById('meetings-list');
-  if (allMeetings.length === 0) {
-    list.innerHTML = '<div class="empty">No meetings logged yet</div>';
-    return;
-  }
-  list.innerHTML = allMeetings.map(m => `
-    <div class="mtg-item">
-      <div class="mtg-top">
-        <div class="mtg-title">${m.title || 'Untitled'}</div>
-        <div class="mtg-date">${m.date ? new Date(m.date).toLocaleDateString('zh-HK', { year: 'numeric', month: 'short', day: 'numeric' }) : ''}</div>
-      </div>
-      ${m.summary ? `<div class="mtg-body">${m.summary.slice(0, 160)}${m.summary.length > 160 ? '…' : ''}</div>` : ''}
-      <div class="mtg-tags">
-        ${m.type ? `<span class="tag tag-blue">${m.type}</span>` : ''}
-        ${m.attendees.map(a => `<span class="tag tag-muted">${a}</span>`).join('')}
-        ${m.decisions ? '<span class="tag tag-green">決議已記錄</span>' : ''}
-      </div>
-    </div>
-  `).join('');
+function showToast(msg, isError = false) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  toast.classList.remove('hidden');
+  setTimeout(() => toast.classList.add('hidden'), 3000);
 }
 
 function updateDashMetrics() {
@@ -465,72 +472,320 @@ function updateDashMetrics() {
   document.getElementById('m-p0').textContent = p0;
   document.getElementById('m-wip').textContent = wip;
   document.getElementById('m-done').textContent = done;
-  document.getElementById('prog-pct').textContent = pct + '%';
-  document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('sb-p0-count').textContent = p0 + ' P0';
-
-  const p0Tasks = allTasks.filter(t => t.priority === 'P0').slice(0, 5);
-  document.getElementById('dash-p0-list').innerHTML = p0Tasks.map(t => `
-    <div class="task-item">
-      ${priorityPill(t.priority)}
-      <span class="task-name">${t.name}</span>
-      <span class="task-cat">${t.category || ''}</span>
-      ${statusPill(t.status)}
-      <span class="task-due">${t.due ? formatDate(t.due) : ''}</span>
-    </div>
-  `).join('');
+  document.getElementById('m-pct').textContent = pct + '%';
+  document.getElementById('m-bar').style.width = pct + '%';
+  document.getElementById('sb-p0').textContent = p0 + ' P0';
 
   const deadline = new Date('2026-08-01');
   const today = new Date();
-  const totalDays = Math.round((deadline - new Date('2026-06-28')) / 86400000);
+  const totalDays = 34;
   const daysLeft = Math.max(0, Math.round((deadline - today) / 86400000));
   const elapsed = totalDays - daysLeft;
   const barPct = Math.min(100, Math.round((elapsed / totalDays) * 100));
-  document.getElementById('ccmf-days').textContent = daysLeft;
-  document.getElementById('ccmf-bar').style.width = barPct + '%';
+
+  ['ov-days', 'ccmf-days2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = daysLeft; });
+  ['ov-bar', 'ccmf-bar2'].forEach(id => { const el = document.getElementById(id); if (el) el.style.width = barPct + '%'; });
+  document.getElementById('sb-ccmf-days').textContent = daysLeft + 'd';
+  const ccmfPctEl = document.getElementById('ccmf-pct2');
+  if (ccmfPctEl) ccmfPctEl.textContent = barPct + '%';
+
+  const p0Tasks = allTasks.filter(t => t.priority === 'P0').slice(0, 5);
+  document.getElementById('ov-p0-list').innerHTML = p0Tasks.map(t => `
+    <div class="flex items-center gap-3 bg-white border border-slate-100 rounded-xl px-4 py-2.5">
+      ${pill(t.priority, priorityColors[t.priority] || '')}
+      <span class="flex-1 text-sm text-slate-700">${t.name}</span>
+      <span class="text-xs text-slate-400">${t.category || ''}</span>
+      ${pill(t.status || '—', statusColors[t.status] || 'bg-slate-100 text-slate-500')}
+      <span class="text-xs text-slate-400">${t.due ? fmtDate(t.due) : ''}</span>
+    </div>
+  `).join('');
+
+  const bizTasks = allTasks.filter(t => t.category === '商業' || t.name.includes('CCMF'));
+  document.getElementById('ccmf-biz').textContent = bizTasks.length;
+  document.getElementById('ccmf-wip').textContent = bizTasks.filter(t => t.status === '進行中').length;
+  document.getElementById('ccmf-done').textContent = bizTasks.filter(t => t.status === '完成').length;
+  document.getElementById('ccmf-tasks').innerHTML = bizTasks.length
+    ? bizTasks.map(t => taskRow(t)).join('')
+    : '<div class="p-6 text-center text-sm text-slate-400">No CCMF tasks found</div>';
 }
 
-function filterTasks(filter, el) {
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderTasks(filter);
+function renderTasks(filter) {
+  const filtered = allTasks.filter(t => {
+    if (filter === 'all') return true;
+    if (['P0','P1','P2','P3'].includes(filter)) return t.priority === filter;
+    return t.status === filter;
+  });
+  document.getElementById('tasks-list').innerHTML = filtered.length
+    ? filtered.map(t => taskRow(t)).join('')
+    : '<div class="p-8 text-center text-sm text-slate-400">No tasks found</div>';
 }
 
-function showError(section, e) {
-  document.getElementById(`${section}-loading`).style.display = 'none';
-  const box = document.getElementById(`${section}-error`);
-  box.style.display = 'block';
-  box.textContent = `無法連接 Notion API。請確認 Integration 已授權 LBID 頁面。錯誤: ${e.message}`;
+function filterTasks(f, el) {
+  document.querySelectorAll('.task-filter').forEach(b => b.classList.remove('active-chip', 'bg-navy', 'text-white', 'border-navy'));
+  el.classList.add('active-chip', 'bg-navy', 'text-white', 'border-navy');
+  renderTasks(f);
 }
 
-function nav(pane, btn) {
-  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
-  document.getElementById(`pane-${pane}`).classList.add('active');
-  if (btn) btn.classList.add('active');
-  const titles = { dash: 'Overview', tasks: 'Tasks', meetings: 'Meetings' };
+function renderGantt(filter = 'all') {
+  const filtered = allTasks.filter(t => {
+    if (filter === 'all') return t.due;
+    return t.priority === filter && t.due;
+  });
+  if (!filtered.length) {
+    document.getElementById('gantt-container').innerHTML = '<div class="p-8 text-center text-sm text-slate-400">No tasks with due dates</div>';
+    return;
+  }
+
+  const start = new Date('2026-06-28');
+  const end = new Date('2026-09-01');
+  const totalDays = Math.round((end - start) / 86400000);
+
+  const months = [];
+  let cur = new Date(start);
+  while (cur < end) {
+    months.push(cur.toLocaleDateString('zh-HK', { month: 'short' }));
+    cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+  }
+
+  const today = new Date();
+  const todayPct = Math.round(((today - start) / (end - start)) * 100);
+
+  let html = `
+    <div class="flex border-b border-slate-100">
+      <div class="w-56 flex-shrink-0 px-4 py-2 text-xs font-semibold text-slate-400">Task</div>
+      <div class="flex-1 relative flex">
+        ${months.map(m => `<div class="flex-1 px-2 py-2 text-xs font-semibold text-slate-400 border-l border-slate-50">${m}</div>`).join('')}
+      </div>
+    </div>
+  `;
+
+  filtered.forEach(t => {
+    const due = new Date(t.due);
+    const taskStart = new Date('2026-06-28');
+    const pct = Math.min(100, Math.max(2, Math.round(((due - start) / (end - start)) * 100)));
+    const barColor = t.priority === 'P0' ? 'bg-red-400' : t.priority === 'P1' ? 'bg-amber-400' : t.priority === 'P2' ? 'bg-yellow-300' : 'bg-slate-300';
+
+    html += `
+      <div class="flex border-b border-slate-50 hover:bg-slate-50 transition-colors group">
+        <div class="w-56 flex-shrink-0 px-4 py-3 flex items-center gap-2">
+          <span class="text-xs font-medium px-1.5 py-0.5 rounded ${priorityColors[t.priority] || 'bg-slate-100 text-slate-500'}">${t.priority}</span>
+          <span class="text-xs text-slate-700 truncate">${t.name}</span>
+        </div>
+        <div class="flex-1 relative px-2 py-3">
+          <div class="relative h-6 flex items-center">
+            <div class="absolute left-0 right-0 h-1.5 bg-slate-100 rounded-full"></div>
+            <div class="absolute h-5 ${barColor} rounded-full gantt-bar flex items-center px-2" style="width:${pct}%;opacity:0.85">
+              <span class="text-xs text-white font-medium truncate hidden group-hover:block">${fmtDate(t.due)}</span>
+            </div>
+            <div class="absolute w-0.5 h-6 bg-navy/30" style="left:${todayPct}%"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById('gantt-container').innerHTML = html;
+}
+
+function filterGantt(f, el) {
+  document.querySelectorAll('.gantt-filter').forEach(b => b.classList.remove('active-chip', 'bg-navy', 'text-white', 'border-navy'));
+  el.classList.add('active-chip', 'bg-navy', 'text-white', 'border-navy');
+  renderGantt(f);
+}
+
+function renderSchedule() {
+  const today = new Date();
+  const weekStart = new Date(today);
+  weekStart.setDate(today.getDate() - today.getDay() + 1 + (weekOffset * 7));
+
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(weekStart);
+    d.setDate(weekStart.getDate() + i);
+    days.push(d);
+  }
+
+  const weekEnd = days[6];
+  document.getElementById('week-label').textContent =
+    `${days[0].toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' })} – ${weekEnd.toLocaleDateString('zh-HK', { month: 'short', day: 'numeric' })}`;
+
+  const tasksByDay = {};
+  allTasks.forEach(t => {
+    if (!t.due) return;
+    const due = new Date(t.due);
+    const key = due.toDateString();
+    if (!tasksByDay[key]) tasksByDay[key] = [];
+    tasksByDay[key].push(t);
+  });
+
+  const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const todayStr = new Date().toDateString();
+
+  let html = '<div class="grid grid-cols-7 gap-2">';
+  days.forEach((d, i) => {
+    const key = d.toDateString();
+    const tasks = tasksByDay[key] || [];
+    const isToday = key === todayStr;
+    html += `
+      <div class="min-h-32">
+        <div class="text-center mb-2">
+          <div class="text-xs text-slate-400">${dayNames[i]}</div>
+          <div class="text-lg font-semibold ${isToday ? 'bg-navy text-white w-8 h-8 rounded-full flex items-center justify-center mx-auto' : 'text-slate-700'}">${d.getDate()}</div>
+        </div>
+        <div class="space-y-1">
+          ${tasks.map(t => `
+            <div class="text-xs p-1.5 rounded-lg ${priorityColors[t.priority] || 'bg-slate-100 text-slate-500'} truncate cursor-default" title="${t.name}">${t.name}</div>
+          `).join('')}
+          ${tasks.length === 0 ? '<div class="h-8 border border-dashed border-slate-100 rounded-lg"></div>' : ''}
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  document.getElementById('schedule-grid').innerHTML = html;
+}
+
+function prevWeek() { weekOffset--; renderSchedule(); }
+function nextWeek() { weekOffset++; renderSchedule(); }
+
+function renderMeetings() {
+  document.getElementById('mtg-count').textContent = allMeetings.length;
+  document.getElementById('meetings-list').innerHTML = allMeetings.length
+    ? allMeetings.map(m => `
+      <div class="bg-white rounded-xl border border-slate-100 p-4">
+        <div class="flex justify-between items-start gap-3">
+          <div class="text-sm font-medium text-slate-800">${m.title || 'Untitled'}</div>
+          <div class="text-xs text-slate-400 whitespace-nowrap">${m.date ? new Date(m.date).toLocaleDateString('zh-HK', { year: 'numeric', month: 'short', day: 'numeric' }) : ''}</div>
+        </div>
+        ${m.summary ? `<div class="text-xs text-slate-500 mt-2 leading-relaxed">${m.summary.slice(0, 200)}${m.summary.length > 200 ? '…' : ''}</div>` : ''}
+        <div class="flex gap-1.5 mt-2 flex-wrap">
+          ${m.type ? `<span class="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">${m.type}</span>` : ''}
+          ${m.attendees.map(a => `<span class="text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">${a}</span>`).join('')}
+          ${m.decisions ? '<span class="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">決議已記錄</span>' : ''}
+        </div>
+      </div>
+    `).join('')
+    : '<div class="bg-white rounded-xl border border-slate-100 p-8 text-center text-sm text-slate-400">No meetings logged yet</div>';
+}
+
+function summarizeMeeting() {
+  const text = document.getElementById('meeting-input').value.trim();
+  if (!text) return;
+  const summaryEl = document.getElementById('ai-summary');
+  summaryEl.innerHTML = '<div class="flex items-center gap-2 text-slate-400"><div class="animate-spin w-4 h-4 border-2 border-slate-200 border-t-navy rounded-full"></div> 整理中...</div>';
+  summaryEl.classList.remove('hidden');
+
+  setTimeout(() => {
+    const lines = text.split('\n').filter(l => l.trim());
+    summaryEl.innerHTML = `
+      <div class="text-xs font-semibold text-green-700 mb-2 flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        AI 摘要已生成 — 請貼入 Notion 會議記錄
+      </div>
+      <div class="space-y-2 text-sm">
+        <div><span class="font-medium text-slate-600">重點摘要：</span><span class="text-slate-600">${lines.slice(0, 2).join('。') || '—'}</span></div>
+        <div><span class="font-medium text-slate-600">字數：</span><span class="text-slate-600">${text.length} 字</span></div>
+        <div class="text-xs text-slate-400 mt-2">💡 完整 AI 摘要請貼入 Claude 對話：「整理以下會議記錄，格式：重點摘要、決定事項、Action Items」</div>
+      </div>
+    `;
+  }, 800);
+}
+
+function clearMeeting() {
+  document.getElementById('meeting-input').value = '';
+  document.getElementById('ai-summary').classList.add('hidden');
+}
+
+function renderFeed() {
+  const list = document.getElementById('feed-list');
+  const typeColors = { update: 'bg-blue-50 text-blue-600', idea: 'bg-purple-50 text-purple-600', blocker: 'bg-red-50 text-red-600', done: 'bg-green-50 text-green-600' };
+  const typeLabels = { update: 'Update', idea: 'Idea', blocker: 'Blocker', done: 'Completed' };
+  list.innerHTML = feedItems.length
+    ? feedItems.slice().reverse().map(f => `
+      <div class="bg-white rounded-xl border border-slate-100 p-4">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-6 h-6 rounded-full ${f.author === 'Harry' ? 'bg-blue-100 text-blue-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center text-xs font-semibold">${f.author[0]}</div>
+          <span class="text-xs font-medium text-slate-600">${f.author}</span>
+          <span class="text-xs px-2 py-0.5 rounded-full ${typeColors[f.type]}">${typeLabels[f.type]}</span>
+          <span class="ml-auto text-xs text-slate-400">${f.time}</span>
+        </div>
+        <div class="text-sm text-slate-700">${f.text}</div>
+      </div>
+    `).join('')
+    : '<div class="bg-white rounded-xl border border-slate-100 p-8 text-center text-sm text-slate-400">No updates yet — post the first one!</div>';
+}
+
+function postFeed() {
+  const text = document.getElementById('feed-input').value.trim();
+  if (!text) return;
+  const type = document.getElementById('feed-type').value;
+  feedItems.push({ text, type, author: 'Harry', time: new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit' }) });
+  localStorage.setItem('lbid-feed', JSON.stringify(feedItems));
+  document.getElementById('feed-input').value = '';
+  renderFeed();
+  showToast('Update posted');
+}
+
+function nav(pane) {
+  document.querySelectorAll('.pane').forEach(p => { p.classList.add('hidden'); p.classList.remove('fade-in'); });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
+  const el = document.getElementById(`pane-${pane}`);
+  if (el) { el.classList.remove('hidden'); setTimeout(() => el.classList.add('fade-in'), 10); }
+  const navEl = document.getElementById(`nav-${pane}`);
+  if (navEl) navEl.classList.add('active-nav');
+  const titles = { overview: 'Overview', timeline: 'Timeline', schedule: 'Schedule', tasks: 'Tasks', ccmf: 'CCMF Application', meetings: 'Meetings', feed: 'Team feed' };
   document.getElementById('page-title').textContent = titles[pane] || '';
+  if (pane === 'timeline') renderGantt();
+  if (pane === 'schedule') renderSchedule();
+  if (pane === 'feed') renderFeed();
 }
 
 async function loadAll() {
   document.getElementById('last-sync').textContent = 'Syncing...';
-  document.getElementById('dash-loading').style.display = 'flex';
-  document.getElementById('dash-content').style.display = 'none';
-  document.getElementById('dash-error').style.display = 'none';
-  document.getElementById('tasks-loading').style.display = 'flex';
-  document.getElementById('tasks-content').style.display = 'none';
-  document.getElementById('tasks-error').style.display = 'none';
-  document.getElementById('meetings-loading').style.display = 'flex';
-  document.getElementById('meetings-content').style.display = 'none';
-  document.getElementById('meetings-error').style.display = 'none';
+  document.getElementById('ov-loading').classList.remove('hidden');
+  document.getElementById('ov-content').classList.add('hidden');
 
-  await Promise.all([loadTasks(), loadMeetings()]);
-  const now = new Date();
-  document.getElementById('last-sync').textContent = `Updated ${now.toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit' })}`;
+  try {
+    const [tasksData, meetingsData] = await Promise.all([
+      notionQuery(TASKS_DB, [{ property: '優先級', direction: 'ascending' }]),
+      notionQuery(MEETINGS_DB, [{ property: '日期', direction: 'descending' }]),
+    ]);
+
+    allTasks = tasksData.results.map(r => ({
+      id: r.id,
+      name: getProp(r.properties, '任務名稱', 'title'),
+      priority: getProp(r.properties, '優先級', 'select'),
+      status: getProp(r.properties, '狀態', 'select'),
+      category: getProp(r.properties, '類別', 'select'),
+      owner: getProp(r.properties, '負責人', 'select'),
+      due: getProp(r.properties, '截止日期', 'date'),
+    }));
+
+    allMeetings = meetingsData.results.map(r => ({
+      id: r.id,
+      title: getProp(r.properties, '會議主題', 'title'),
+      date: getProp(r.properties, '日期', 'date'),
+      type: getProp(r.properties, '類型', 'select'),
+      attendees: getProp(r.properties, '出席者', 'multi_select'),
+      summary: getProp(r.properties, '重點摘要', 'text'),
+      decisions: getProp(r.properties, '決議事項', 'text'),
+    }));
+
+    updateDashMetrics();
+    renderTasks('all');
+    renderMeetings();
+    renderFeed();
+
+    document.getElementById('ov-loading').classList.add('hidden');
+    document.getElementById('ov-content').classList.remove('hidden');
+    document.getElementById('last-sync').textContent = `Updated ${new Date().toLocaleTimeString('en-HK', { hour: '2-digit', minute: '2-digit' })}`;
+  } catch (e) {
+    document.getElementById('ov-loading').innerHTML = `<div class="text-red-500 text-sm">Error: ${e.message}</div>`;
+    document.getElementById('last-sync').textContent = 'Sync failed';
+  }
 }
 
 loadAll();
 </script>
 </body>
 </html>
-
