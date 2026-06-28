@@ -5,8 +5,8 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const { path } = req.query;
-  const notionUrl = `https://api.notion.com/v1/${path}`;
+  const url = req.url.replace('/api/', '');
+  const notionUrl = `https://api.notion.com/v1/${url}`;
 
   try {
     const response = await fetch(notionUrl, {
@@ -18,7 +18,6 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify(req.body || {}),
     });
-
     const data = await response.json();
     return res.status(response.status).json(data);
   } catch (e) {
